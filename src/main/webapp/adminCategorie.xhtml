@@ -1,0 +1,110 @@
+<ui:composition 
+	  xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+	template="./index.xhtml">
+	
+	<ui:define name="title">
+   		Administration : <ui:insert name="adminTitle">Gestion des catégories</ui:insert>
+   	</ui:define>
+   	
+   <ui:define name="contenu">
+		<h:panelGrid>
+			<p:row>
+				<h:form id="FormTableCategs">
+					<p:growl id="growl" showDetail="true" />
+					<p:dataTable id="tblCategs" var="categ" value="#{adminCategories.allCategories}"
+						 resizableColumns="true"
+						 editable="true"
+						paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {Exporters}"
+						paginator="true" rows="5" style="margin-bottom:20px"
+						selection="#{adminCategories.selectedCategorie}" rowKey="#{categ.id}"
+						emptyMessage="Aucune Catégorie enregistrée"
+						filteredValue="#{adminCategories.filteredCategories}"
+						widgetVar="categsTable">
+						<f:facet name="{Exporters}">
+							<h:commandLink>
+								<p:graphicImage name="img/excel.png" width="24" />
+								<p:dataExporter type="xls" target="tblCategs" fileName="Catégories" />
+							</h:commandLink>
+
+							<h:commandLink>
+								<p:graphicImage name="img/pdf.png" width="24" />
+								<p:dataExporter type="pdf" target="tblCategs" fileName="Catégories" />
+							</h:commandLink>
+						</f:facet>
+						<f:facet name="header">Liste des Catégories</f:facet>
+						<p:column selectionMode="single"
+							style="width:16px;text-align: center" />
+						<p:column headerText="ID">
+							<h:outputText value="#{categ.id}" />
+						</p:column>
+						<p:column headerText="Nom"
+								filterBy="#{categ.nom}"
+								filterMatchMode="contains">
+							<h:outputText value="#{categ.nom}" />
+						</p:column>
+						<p:column headerText="Description">
+							<h:outputText value="#{categ.description}" />
+						</p:column>
+						<f:facet name="footer">
+						
+							<p:commandButton id="editCateg" value="Editer"
+							action="#{adminCategories.edit}" update="formEdit"
+								ajax="false" icon="ui-icon-circle-check"/>
+							<p:commandButton id="deleteCateg" value="! Supprimer !"
+								action="#{adminCategories.deleteSelectedCategorie}" update="growl"
+								ajax="false" icon="ui-icon-circle-minus"/>
+							<p:commandButton id="addCateg" value="Ajouter"
+								action="#{adminCategories.prepareAdd}"
+								ajax="false" icon="ui-icon-circle-plus"/>
+						
+						</f:facet>
+						<p:ajax event="rowSelect"/>
+						<p:ajax event="rowUnselect"/>
+					</p:dataTable>
+				</h:form>
+			</p:row>
+			<p:row id="rowEdit" >
+				<h:form id="formEdit" rendered="#{adminCategories.editMode}">
+					<p:panel header="Mise à jour des données">
+						<h:panelGrid columns="2" id="grid">
+							<h:outputLabel value="Nom : *" for="txt_name" />
+							<p:inputText id="txt_name" value="#{adminCategories.selectedCategorie.nom}"
+								required="true" />
+							<h:outputLabel value="Description : *" for="txt_desc" />
+							<p:inputText id="txt_desc" value="#{adminCategories.selectedCategorie.description}"
+									required="true" />
+							<p:commandButton id="btn_cancel" value="Annuler"
+							action="#{adminCategories.cancelUpdate}"  ajax="false"/>
+							<p:commandButton id="btn_update" value="Modifier"
+								action="#{adminCategories.updateCategorie}" update="growl" ajax="false"/>
+						</h:panelGrid>
+					</p:panel>
+				</h:form>
+
+			</p:row>
+			<p:row id="rowNew" >
+				<h:form id="formNew" rendered="#{adminCategories.addMode}">
+					<p:growl id="msgs" />
+					<p:panel header="Ajout d'une Nouvelle Catégorie">
+						<h:panelGrid columns="2" id="grid">
+							<h:outputLabel value="Nom : *" for="txt_nameAdd" />
+							<p:inputText id="txt_nameAdd" value="#{adminCategories.categorieToAdd.nom}"
+								required="true" />
+							<h:outputLabel value="Description : *" for="txt_descAdd" />
+							<p:inputText id="txt_descAdd" value="#{adminCategories.categorieToAdd.description}"
+									required="true" />
+							<p:commandButton id="btn_cancelAdd" value="Annuler"
+							action="#{adminCategories.cancelAdd}" immediate="true" ajax="false"/>
+							<p:commandButton id="btn_add" value="Ajouter"
+								action="#{adminCategories.addCategorie}" ajax="false"/>
+						</h:panelGrid>
+					</p:panel>
+				</h:form>
+			</p:row>
+		</h:panelGrid>
+	</ui:define>
+</ui:composition>

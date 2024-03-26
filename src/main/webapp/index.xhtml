@@ -1,0 +1,77 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html 
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+<f:view contentType="text/html">
+	<h:head>
+		<f:facet name="first">
+			<meta content='text/html; charset=UTF-8' http-equiv="Content-Type" />
+			<h:outputStylesheet name="style.css" library="css" />
+			<h:outputStylesheet library="css" name="font-awesome.css" />
+			<title><ui:insert name="title">eCom JSF</ui:insert></title>
+		</f:facet>
+	</h:head>
+	<h:body>
+		<p:layout fullPage="true">
+			<p:layoutUnit position="north" size="85" resizable="true"
+				closable="true" collapsible="true">
+				<p:panelGrid>
+					<h:form>
+						<p:column style="width:40%">
+						<h:link outcome="/index.jsf">
+							<h:graphicImage library="img" name="logo.png" width="300" height="70" />
+						</h:link>
+					</p:column>
+					</h:form>
+					<p:column>
+						<h:form>
+							<p:outputLabel for="basic" value="Basic:" />
+					        <p:themeSwitcher value="#{themeSwitcher.theme}" id="basic" style="width:165px">
+					            <f:selectItem itemLabel="--Choisir un Thème--" itemValue="" />
+								<f:selectItems value="#{themeSwitcher.themes}" />
+					        </p:themeSwitcher>
+						</h:form>
+					</p:column>
+				</p:panelGrid>
+			</p:layoutUnit>
+
+			<p:layoutUnit position="south" size="50" closable="true"
+				collapsible="true">
+				Footer : Ici CopyRight et coordonnées
+				<h:graphicImage name="img/logo.png" height="50" />
+			</p:layoutUnit>
+
+			<p:layoutUnit position="west" size="200" header="Soui9a dot Com"
+				collapsible="true">
+				<h:form>
+					<ui:insert name="homeLink"></ui:insert>
+				</h:form>
+				<p:menu toggleable="true">
+					<ui:insert name="menu">
+						<p:submenu label="Catalogue" icon="ui-icon-wrench" styleClass="ui-submenu">
+						<p:menuitem value="Catégories"
+							url="./adminCategorie.jsf" icon="ui-icon-script"/>
+						<p:menuitem value="Produits"
+							url="./adminProduit.jsf" icon="ui-icon-clipboard"/>
+						<p:menuitem value="Statistiques"
+							url="./adminStatistic.jsf" icon="ui-icon-calculator"/>
+							<p:menuitem value="Users"
+							url="./adminUsers.jsf" icon="ui-icon-calculator"/>
+						</p:submenu>
+					</ui:insert>
+				</p:menu>
+			</p:layoutUnit>
+			<p:layoutUnit position="center" resizable="true" size="1200"
+				minSize="800" maxSize="1400">
+				<ui:insert name="contenu">
+                    Contenu Principal en Foncion de l'opération choisie<br />
+				</ui:insert>
+			</p:layoutUnit>
+		</p:layout>
+	</h:body>
+</f:view>
+</html>

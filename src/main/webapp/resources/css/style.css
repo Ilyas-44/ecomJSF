@@ -1,0 +1,28 @@
+.ui-submenu{
+    font-size: 90%!important;
+}
+.ui-menuitem{
+    font-size: 80%!important;
+}
+table.zebra tr:nth-child(odd) td {
+	background-color: #dddddd;
+}
+ui-panelgrid>*>tr,
+.ui-panelgrid .ui-panelgrid-cell {
+    border: none!important;
+}
+.ui-datatable tbody td.wrap {
+    white-space: normal;
+}
+.majMaint {
+    vertical-align: top;
+}
+
+.lblSuivi{
+	display:block;
+	background-color: #c52827;
+	color: #eeeeee;
+	font-size: 120%;
+	width: 170px!important;
+	height: 50px!important;
+}

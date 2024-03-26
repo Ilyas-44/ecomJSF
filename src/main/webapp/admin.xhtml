@@ -1,0 +1,71 @@
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+xmlns:h="http://java.sun.com/jsf/html"
+xmlns:p="http://primefaces.org/ui"
+xmlns:f="http://java.sun.com/jsf/core"
+                template="./index.xhtml">
+   <ui:define name="title">
+   Administration : <ui:insert name="adminTitle"></ui:insert>
+   </ui:define>
+   <ui:define name="menu">
+   <ui:insert name="adminMenu">
+					<p:submenu label="Configuration" icon="ui-icon-person" styleClass="ui-submenu">
+						<p:menuitem value="Utilisateurs"
+							url="/admin/adminUser.jsf" icon="ui-icon-person"/>
+						<p:menuitem value="Départements"
+							url="/admin/adminDept.jsf" icon="ui-icon-pin-s"/>
+						<p:menuitem value="Catégories"
+							url="/admin/adminCateg.jsf" icon="ui-icon-document"/>
+							
+						
+					</p:submenu>
+					<p:submenu label="Parc Info.">
+						<p:menuitem value="Matériels"
+							url="/admin/adminMat.jsf" icon="ui-icon-print"/>
+						<p:menuitem value="Logiciels"
+							url="/admin/adminLogiciel.jsf" icon="ui-icon-disk"/>
+						<p:menuitem value="Licences"
+							url="/admin/adminLicence.jsf" icon="ui-icon-script"/>
+						<p:menuitem value="Affectation-Licence"
+							url="/admin/adminAffectLog.jsf" icon="ui-icon-pin-w"/>
+					</p:submenu>
+					<p:submenu label="Consommable">
+						<p:menuitem value="Stock"
+							url="/admin/adminConso.jsf" icon="ui-icon-cart"/>
+						<p:menuitem value="Entrées"
+							url="/admin/adminConsoEntrees.jsf" icon="ui-icon-arrow-1-se"/>
+						<p:menuitem value="Sorties"
+							url="/admin/adminConsoSorties.jsf" icon="ui-icon-arrow-1-nw"/>
+					</p:submenu>
+					<p:separator />
+					<p:submenu label="BelDesk">
+						<p:menuitem value="Tickets"
+							url="/admin/adminTicket.jsf" icon="ui-icon-note"/>
+					</p:submenu>
+
+					<p:submenu label="Réservations">
+						<p:menuitem value="Gérer..."
+							url="/admin/adminReservation.jsf" icon="ui-icon-tag"/>
+					</p:submenu>
+					<p:submenu label="Préventions">
+						<p:menuitem value="Gérer"
+								url="/admin/adminPreventions.jsf" icon="ui-icon-gear"/>
+						<p:menuitem value="Voir Planning"
+							url="/admin/viewPreventions.jsf" icon="ui-icon-search"/>
+					</p:submenu>
+					<p:submenu label="Interventions">
+						<p:menuitem value="Curatives/Préventives"
+							url="/admin/adminPreventions.jsf" icon="ui-icon-calculator"/>
+					</p:submenu>
+					<p:separator />
+					<p:submenu label="Statistiques">
+						<p:menuitem value="Visualiser"
+							url="/admin/adminStatistiques.jsf" icon="ui-icon-calculator"/>
+					</p:submenu>
+			</ui:insert>
+   </ui:define>
+   <ui:define name="contenu">
+   	<h:panelGrid>
+   		
+   	</h:panelGrid>
+   </ui:define>         
+</ui:composition>

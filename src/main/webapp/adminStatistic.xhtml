@@ -1,0 +1,44 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" template="./index.xhtml">
+
+	<ui:define name="title">
+   		Administration : <ui:insert name="adminTitle">Sattistiques</ui:insert>
+	</ui:define>
+
+	<ui:define name="contenu">
+		<h:panelGrid>
+			<h1>Statistiques des Produits</h1>
+			<p:row id="rowBarChart">
+				<h:form id="FormStatsProdsBC">
+					<p:chart id="prodsBarChart" type="bar"
+						model="#{stats.produitParCategorieBct}" widgetVar="prodsBarChart"
+						style="width: 800px; height: 500px;" />
+				</h:form>
+
+				<!-- <p:row>
+					<h:form id="FormStatsProdsBC2">
+
+						<div class="card">
+							<h5>Basic</h5>
+							<p:barChart model="#{stats.barModel}"
+								style="width: 100%; height: 500px;" />
+						</div>
+					</h:form>
+				</p:row> -->
+
+
+			</p:row>
+			<p:row id="rowPieChart">
+				<h:form id="FormStatsProdsPC">
+					<p:chart id="prodsPieChart" type="pie"
+						model="#{stats.produitParCategoriePCt}" widgetVar="prodsPieChart"
+						style="width: 500px; height: 500px;" />
+				</h:form>
+
+			</p:row>
+		</h:panelGrid>
+	</ui:define>
+</ui:composition>

@@ -1,0 +1,152 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://xmlns.jcp.org/jsf/html"
+    xmlns:f="http://xmlns.jcp.org/jsf/core"
+    xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui"
+    template="./index.xhtml">
+
+    <ui:define name="title">
+        Administration : Gestion des produits
+    </ui:define>
+
+    <ui:define name="contenu">
+    <h:panelGrid>
+        <p:row>
+            <h:form id="FormTableProduits">
+                <p:growl id="growl" showDetail="true" />
+                <p:dataTable id="tblProduits" var="produit" value="#{adminProduits.allProduits}"
+                    resizableColumns="true"
+                    editable="true"
+                    paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown} {Exporters} "
+                    paginator="true" rows="5" style="margin-bottom:20px"
+                    rowsPerPageTemplate="5,10,{ShowAll|'Afficher tout'}"
+                    selection="#{adminProduits.selectedProduit}" rowKey="#{produit.id}"
+                    emptyMessage="Aucun Produit enregistré"
+                    filteredValue="#{adminProduits.filteredProduits}"
+                    widgetVar="produitsTable">
+                    <f:facet name="{Exporters}">
+                        <h:commandLink>
+                            <p:graphicImage name="img/excel.png" width="24" />
+                            <p:dataExporter type="xls" target="tblProduits" fileName="Produits" />
+                        </h:commandLink>
+
+                        <h:commandLink>
+                            <p:graphicImage name="img/pdf.png" width="24" />
+                            <p:dataExporter type="pdf" target="tblProduits" fileName="Produits" />
+                        </h:commandLink>
+                    </f:facet>
+                    <f:facet name="header">Liste des Produits</f:facet>
+                    <p:column selectionMode="single"
+                        style="width:16px;text-align: center" />
+                    <p:column headerText="ID">
+                        <h:outputText value="#{produit.id}" />
+                    </p:column>
+                    <p:column headerText="Désignation"
+                            filterBy="#{produit.designation}"
+                            filterMatchMode="contains">
+                        <h:outputText value="#{produit.designation}" />
+                    </p:column>
+                    <p:column headerText="Prix">
+                        <h:outputText value="#{produit.prix}" />
+                    </p:column>
+                    
+                    <p:column headerText="Quantité">
+                        <h:outputText value="#{produit.quantite}" />
+                    </p:column>
+                    <p:column headerText="Photo">
+    <p:graphicImage value="images/photos/#{produit.photo}" width="100"/>
+</p:column>
+
+                     <p:column headerText="Categorie">
+                        <h:outputText value="#{produit.categorie.nom}" />
+                    </p:column>
+                    <f:facet name="footer">
+
+                        <p:commandButton id="editProd" value="Editer"
+                            action="#{adminProduits.edit}" update="formEdit"
+                            ajax="false" icon="ui-icon-circle-check"/>
+                        <p:commandButton id="deleteProd" value="Supprimer"
+                            action="#{adminProduits.deleteProduit}" update="growl"
+                            ajax="false" icon="ui-icon-circle-minus"/>
+                        <p:commandButton id="addProd" value="Ajouter"
+                            action="#{adminProduits.prepareAdd}"
+                            ajax="false" icon="ui-icon-circle-plus"/>
+
+                    </f:facet>
+                    <p:ajax event="rowSelect"/>
+                    <p:ajax event="rowUnselect"/>
+                </p:dataTable>
+            </h:form>
+        </p:row>
+        <p:row id="rowEdit" >
+            <h:form id="formEdit"  enctype="multipart/form-data" rendered="#{adminProduits.editMode}">
+                <p:panel header="Mise à jour des données">
+                    <h:panelGrid columns="2" id="grid">
+                        <h:outputLabel value="Désignation : *" for="txt_designation" />
+                        <p:inputText id="txt_designation" value="#{adminProduits.selectedProduit.designation}"
+                            required="true" />
+                        <h:outputLabel value="Prix : *" for="txt_prix" />
+                        <p:inputText id="txt_prix" value="#{adminProduits.selectedProduit.prix}"
+                                required="true" />
+                                      <h:outputLabel value="Quantite : *" for="txt_quantiteAdd" />
+                        <p:inputText id="txt_quantiteAdd" value="#{adminProduits.produitToAdd.quantite}"
+                                required="true" />   
+                                
+                                <h:outputLabel value="Categorie : *" for="sel_categAdd" />
+                        <h:selectOneMenu id="sel_categAdd"
+                        converter="categorieConverter"
+                        value="#{adminProduits.selectedCategorie}">
+                        	<f:selectItems value="#{adminProduits.allCategories}" var="categ" 
+                        	itemValue="#{categ}" itemLabel="#{categ.nom}"/>
+                        
+                        </h:selectOneMenu>
+                        <p:commandButton id="btn_cancel" value="Annuler"
+                        action="#{adminProduits.cancelUpdate}"  ajax="false"/>
+                        <p:commandButton id="btn_update" value="Modifier"
+                            action="#{adminProduits.updateProduit}" update="growl" ajax="false"/>
+                    </h:panelGrid>
+                </p:panel>
+            </h:form>
+        </p:row>
+        <p:row id="rowNew" >
+            <h:form id="formNew" enctype="multipart/form-data" rendered="#{adminProduits.addMode}">
+                <p:growl id="msgs" />
+                <p:panel header="Ajout d'un Nouveau Produit">
+                    <h:panelGrid columns="2" id="grid">
+                        <h:outputLabel value="Désignation : *" for="txt_designationAdd" />
+                        <p:inputText id="txt_designationAdd" value="#{adminProduits.produitToAdd.designation}"
+                            required="true" />
+                        <h:outputLabel value="Prix : *" for="txt_prixAdd" />
+                        <p:inputText id="txt_prixAdd" value="#{adminProduits.produitToAdd.prix}"
+                                required="true" />
+                                
+                             <h:outputLabel value="Quantite : *" for="txt_quantiteAdd" />
+                        <p:inputText id="txt_quantiteAdd" value="#{adminProduits.produitToAdd.quantite}"
+                                required="true" />   
+                                
+                                <h:outputLabel value="Categorie : *" for="sel_categAdd" />
+                        <h:selectOneMenu id="sel_categAdd"
+                        converter="categorieConverter"
+                        value="#{adminProduits.selectedCategorie}">
+                        	<f:selectItems value="#{adminProduits.allCategories}" var="categ" 
+                        	itemValue="#{categ}" itemLabel="#{categ.nom}"/>
+                        
+                        </h:selectOneMenu>
+						<h:outputLabel value="photo : *" for="file_photo" />
+						<p:fileUpload value="#{adminProduits.photo}" id="file_photo" 
+    fileUploadListener="#{adminProduits.upload}" mode="simple" 
+    skinSimple="true" ajax="false" description="Choose a file">
+</p:fileUpload>
+
+                        <p:commandButton id="btn_cancelAdd" value="Annuler"
+                        action="#{adminProduits.cancelAdd}" immediate="true" ajax="false"/>
+                        <p:commandButton id="btn_add" value="Ajouter"
+                            action="#{adminProduits.addProduit}" ajax="false"/>
+                    </h:panelGrid>
+                </p:panel>
+            </h:form>
+        </p:row>
+    </h:panelGrid>
+</ui:define>
+
+</ui:composition>
